@@ -450,10 +450,12 @@ public class DefaultMQProducerImpl implements MQProducerInner {
             Exception exception = null;
             SendResult sendResult = null;
             //发送模式是sync 会有3次其他1次
+            //retryTimesWhenSendFailed决定同步方法重试次数
             int timesTotal = communicationMode == CommunicationMode.SYNC ? 1 + this.defaultMQProducer.getRetryTimesWhenSendFailed() : 1;
             int times = 0;
             String[] brokersSent = new String[timesTotal];
             for (; times < timesTotal; times++) {
+                //lastBrokerName代表发送失败的broker，防止选择的下一个queue也是失败的。
                 String lastBrokerName = null == mq ? null : mq.getBrokerName(); //第一次的确是null 但是如果第二次呢？ 所以这里存在的意义
                 MessageQueue tmpmq = this.selectOneMessageQueue(topicPublishInfo, lastBrokerName);//选择一个queue
                 if (tmpmq != null) {

@@ -373,7 +373,7 @@ public abstract class NettyRemotingAbstract {
                     PLOG.warn("send a request command to channel <" + addr + "> failed.");
                 }
             });
-
+            //有可能是超时返回，如果broker给返回，则command有值
             RemotingCommand responseCommand = responseFuture.waitResponse(timeoutMillis);
             if (null == responseCommand) {
                 if (responseFuture.isSendRequestOK()) {

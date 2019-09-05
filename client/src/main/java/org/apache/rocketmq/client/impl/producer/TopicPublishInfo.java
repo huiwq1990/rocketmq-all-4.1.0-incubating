@@ -68,6 +68,7 @@ public class TopicPublishInfo {
         this.haveTopicRouterInfo = haveTopicRouterInfo;
     }
 
+//    lastBrokerName指的是上一次执行消息发送时选择失败的broker
     public MessageQueue selectOneMessageQueue(final String lastBrokerName) {
         if (lastBrokerName == null) {//第一次进入就是空的
             return selectOneMessageQueue();

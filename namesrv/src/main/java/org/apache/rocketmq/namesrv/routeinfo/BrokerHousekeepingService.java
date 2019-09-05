@@ -23,6 +23,7 @@ import org.apache.rocketmq.remoting.ChannelEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//当Broker和NameSrv之间的长连接断掉之后，下面的ChannelEventListener里面的函数就会被回调，从而触发NameServer的路由信息更新。
 public class BrokerHousekeepingService implements ChannelEventListener {
     private static final Logger log = LoggerFactory.getLogger(LoggerName.NAMESRV_LOGGER_NAME);
     private final NamesrvController namesrvController;

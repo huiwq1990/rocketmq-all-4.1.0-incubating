@@ -67,6 +67,7 @@ public class MQFaultStrategy {
      * @return 消息队列
      */
     public MessageQueue selectOneMessageQueue(final TopicPublishInfo tpInfo, final String lastBrokerName) {
+        // Broker故障延迟机制
         if (this.sendLatencyFaultEnable) { //发送消息延迟容错开关
             try {
                 int index = tpInfo.getSendWhichQueue().getAndIncrement();
@@ -75,6 +76,7 @@ public class MQFaultStrategy {
                     if (pos < 0)
                         pos = 0;
                     MessageQueue mq = tpInfo.getMessageQueueList().get(pos);
+                    // 校验队列是否可用，实现在一定时间内规避故障broker
                     if (latencyFaultTolerance.isAvailable(mq.getBrokerName())) {
                         if (null == lastBrokerName || mq.getBrokerName().equals(lastBrokerName))
                             return mq;
